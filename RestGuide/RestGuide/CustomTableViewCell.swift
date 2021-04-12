@@ -15,6 +15,7 @@ class CustomTableViewCell: UITableViewCell {
     
     @IBOutlet weak var restDesc: UILabel!
     
+    @IBOutlet var star: CosmosView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
