@@ -1,3 +1,10 @@
+//
+//  SearchRestaurantViewController.swift
+//  RestGuide
+//
+//  Created by Hossein Hajibaba-ali on 4/11/21.
+//  Copyright ©️ 2021 gbc. All rights reserved.
+//
 
 import UIKit
 
