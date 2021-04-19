@@ -1,10 +1,3 @@
-//
-//  DB.swift
-//  talk2alex
-//
-//  Created by Hossein Hajibaba-ali on 7/30/20.
-//  Copyright © 2020 Hossein Hajibaba-ali. All rights reserved.
-//
 
 import Foundation
 import SQLite3

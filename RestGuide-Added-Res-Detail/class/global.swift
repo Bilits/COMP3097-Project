@@ -1,10 +1,3 @@
-//
-//  global.swift
-//  RestGuide
-//
-//  Created by Hossein Hajibaba-ali on 4/10/21.
-//  Copyright © 2021 gbc. All rights reserved.
-//
 
 import Foundation
 import UIKit

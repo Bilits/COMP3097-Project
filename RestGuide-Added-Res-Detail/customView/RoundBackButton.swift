@@ -1,10 +1,3 @@
-//
-//  RoundBackButton.swift
-//  RestGuide
-//
-//  Created by Saeed Reza Tavallaee on 4/16/21.
-//  Copyright © 2021 gbc. All rights reserved.
-//
 
 import UIKit
 

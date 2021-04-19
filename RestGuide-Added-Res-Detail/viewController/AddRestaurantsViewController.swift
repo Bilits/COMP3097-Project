@@ -1,70 +1,99 @@
-//
-//  ViewController.swift
-//  RestGuide
-//
-//  Created by Tech on 2021-03-28.
-//  Copyright © 2021 gbc. All rights reserved.
-//
+
 
 import UIKit
 
-class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    var selectedRestaurant: Restaurant!
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listRestaurants.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell") as! CustomTableViewCell
-        cell.restName.text = listRestaurants[indexPath.row].nameRestaurant
-        cell.restDesc.text = listRestaurants[indexPath.row].descriptionRestaurant
-        cell.star.rating = Double(listRestaurants[indexPath.row].rate)! 
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedRestaurant = listRestaurants[indexPath.row]
-        self.performSegue(withIdentifier: "restaurantDetailsSegue", sender: self)
-    }
-    
+class AddRestaurantsViewController: UIViewController {
 
-    @IBOutlet weak var tableView: UITableView!
+    var isInEditMode: Bool = false
+    var restaurant: Restaurant!
     var db:DBHelper = DBHelper()
-
-    let restaurants = [
-        ["name":"KFC", "desc":"KFC Desc"],
-        ["name":"McDonald","desc":"McDonald Desc"],
-        ["name":"Nandos","desc":"Nandos Desc"],
-        ["name":"Harveys","desc":"Harveys Desc"],
-        ["name":"Hero Burger","desc":"Hero Burger Desc"]
-    ]
-
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        tableView.delegate = self
-        tableView.dataSource = self
-        listRestaurants = db.read()
-        tableView.reloadData()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        listRestaurants = db.read()
-        tableView.reloadData()
-    }
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "restaurantDetailsSegue" {
-            if segue.destination is RestaurantDetailViewController {
-                (segue.destination as! RestaurantDetailViewController).restaurant = selectedRestaurant
+    var rate : Float = 3.0
+    @IBOutlet var nameRestaurant:UITextField!
+    @IBOutlet var descriptionRestaurant: UITextField!
+    @IBOutlet var addressRestaurant: UITextField!
+    @IBOutlet var phoneNumberRestaurant: UITextField!
+    @IBOutlet var tagsRestaurant: UITextField!
+    @IBOutlet var star: CosmosView!
+    @IBOutlet weak var addEditButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBAction func addRestaurant(_ sender: Any) {
+        if nameRestaurant.text == "" || descriptionRestaurant.text == "" || addressRestaurant.text == "" || phoneNumberRestaurant.text == "" || tagsRestaurant.text == "" {
+            showToast(message: "fill all textField")
+        } else{
+            if isInEditMode {
+                db.update(id: restaurant.id, newValue: Restaurant(id: restaurant.id, nameRestaurant: nameRestaurant.text!, descriptionRestaurant: descriptionRestaurant.text!, addressRestaurant: addressRestaurant.text!, phoneNumberRestaurant: phoneNumberRestaurant.text!, tagsRestaurant: tagsRestaurant.text!, rate: String(self.rate)))
+                showToastGreen(message: "Successfully updated.")
+            } else  {
+                db.insert(nameRestaurant: nameRestaurant.text!, descriptionRestaurant: descriptionRestaurant.text!, addressRestaurant: addressRestaurant.text!, phoneNumberRestaurant: phoneNumberRestaurant.text!, tagsRestaurant: tagsRestaurant.text!,rate: String(self.rate) )
+                showToastGreen(message: "Successfully inserted")
+                blankAllTextFields()
             }
         }
+       
+    }
+    @IBAction func cancelAdd(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        _ = db.read()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+       view.addGestureRecognizer(tap)
+        star.rating = Double(self.rate)
+        star.didTouchCosmos = didTouchCosmos
+        star.didFinishTouchingCosmos = didFinishTouchingCosmos
+        // Do any additional setup after loading the view.
+        
+        if isInEditMode {
+            listRestaurants = db.read()
+            restaurant = listRestaurants.filter { (restarurant) in
+                restaurant.id == self.restaurant.id
+            }.first
+            setupEditMode()
+        }
+    }
+    
+    private func setupEditMode() {
+        if isInEditMode {
+            titleLabel.isHidden = true
+            self.title = "Edit Restaurant"
+            fillViews()
+            addEditButton.setTitle("Save", for: .normal)
+        }
+    }
+    
+    private func fillViews() {
+        nameRestaurant.text = restaurant.nameRestaurant
+        descriptionRestaurant.text = restaurant.descriptionRestaurant
+        addressRestaurant.text = restaurant.addressRestaurant
+        phoneNumberRestaurant.text = restaurant.phoneNumberRestaurant
+        tagsRestaurant.text = restaurant.tagsRestaurant
+        star.rating = Double(restaurant.rate) ?? 0
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+    private func didTouchCosmos(_ rating: Double) {
+
+        self.rate = Float(rating)
+        print(rate)
+      
+     }
+    private func didFinishTouchingCosmos(_ rating: Double) {
+        print(rate)
+        self.rate = Float(rating)
+     
+    }
+
+    private func blankAllTextFields() {
+        nameRestaurant.text = ""
+        descriptionRestaurant.text = ""
+        addressRestaurant.text = ""
+        phoneNumberRestaurant.text = ""
+        tagsRestaurant.text = ""
     }
 
 
 }
-

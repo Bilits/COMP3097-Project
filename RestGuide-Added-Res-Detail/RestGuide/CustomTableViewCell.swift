@@ -1,10 +1,4 @@
-//
-//  CustomTableViewCell.swift
-//  RestGuide
-//
-//  Created by Tech on 2021-03-28.
-//  Copyright © 2021 gbc. All rights reserved.
-//
+
 
 import UIKit
 
