@@ -1,0 +1,14 @@
+# Uncomment the next line to define a global platform for your 
+ source 'https://github.com/CocoaPods/Specs.git'
+ platform :ios, '10.0'
+
+target 'RestGuide' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+    pod 'SQLite.swift'
+    
+    pod 'TagListView', '~> 1.0'
+  # Pods for RestGuide
+
+end

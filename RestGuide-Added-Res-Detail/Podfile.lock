@@ -1,0 +1,23 @@
+PODS:
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
+  - TagListView (1.4.1)
+
+DEPENDENCIES:
+  - SQLite.swift
+  - TagListView (~> 1.0)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - TagListView
+  trunk:
+    - SQLite.swift
+
+SPEC CHECKSUMS:
+  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
+  TagListView: a1c236d17960a0cf64156725a76ce6d73ebce2be
+
+PODFILE CHECKSUM: e2feab9e8c4dcc7423c18400ae7f1c41f75d059d
+
+COCOAPODS: 1.8.4
